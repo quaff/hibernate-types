@@ -2,6 +2,7 @@ package com.vladmihalcea.hibernate.type.json;
 
 import com.vladmihalcea.hibernate.type.json.internal.JsonBinarySqlTypeDescriptor;
 import com.vladmihalcea.hibernate.type.json.internal.JsonTypeDescriptor;
+import com.vladmihalcea.hibernate.type.util.PropertyLoader;
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;
 import org.hibernate.usertype.DynamicParameterizedType;
 
@@ -20,7 +21,10 @@ public class JsonBinaryType
     public static final JsonBinaryType INSTANCE = new JsonBinaryType();
 
     public JsonBinaryType() {
-        super(JsonBinarySqlTypeDescriptor.INSTANCE, new JsonTypeDescriptor());
+        super(
+            JsonBinarySqlTypeDescriptor.INSTANCE,
+            new JsonTypeDescriptor(PropertyLoader.INSTANCE.getObjectMapperWrapper())
+        );
     }
 
     public String getName() {

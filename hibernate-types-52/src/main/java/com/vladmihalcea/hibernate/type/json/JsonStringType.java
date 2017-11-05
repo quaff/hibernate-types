@@ -1,7 +1,10 @@
 package com.vladmihalcea.hibernate.type.json;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vladmihalcea.hibernate.type.json.internal.JsonStringSqlTypeDescriptor;
 import com.vladmihalcea.hibernate.type.json.internal.JsonTypeDescriptor;
+import com.vladmihalcea.hibernate.type.util.ObjectMapperWrapper;
+import com.vladmihalcea.hibernate.type.util.PropertyLoader;
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;
 import org.hibernate.usertype.DynamicParameterizedType;
 
@@ -20,7 +23,17 @@ public class JsonStringType
     public static final JsonStringType INSTANCE = new JsonStringType();
 
     public JsonStringType() {
-        super(JsonStringSqlTypeDescriptor.INSTANCE, new JsonTypeDescriptor());
+        super(
+            JsonStringSqlTypeDescriptor.INSTANCE,
+            new JsonTypeDescriptor(PropertyLoader.INSTANCE.getObjectMapperWrapper())
+        );
+    }
+
+    public JsonStringType(ObjectMapper objectMapper) {
+        super(
+            JsonStringSqlTypeDescriptor.INSTANCE,
+            new JsonTypeDescriptor(new ObjectMapperWrapper(objectMapper))
+        );
     }
 
     public String getName() {

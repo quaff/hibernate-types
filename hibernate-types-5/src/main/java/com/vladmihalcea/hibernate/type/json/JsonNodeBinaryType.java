@@ -3,6 +3,7 @@ package com.vladmihalcea.hibernate.type.json;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.vladmihalcea.hibernate.type.json.internal.JsonBinarySqlTypeDescriptor;
 import com.vladmihalcea.hibernate.type.json.internal.JsonNodeTypeDescriptor;
+import com.vladmihalcea.hibernate.type.util.PropertyLoader;
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;
 
 /**
@@ -18,10 +19,14 @@ public class JsonNodeBinaryType
     public static final JsonNodeBinaryType INSTANCE = new JsonNodeBinaryType();
 
     public JsonNodeBinaryType() {
-        super(JsonBinarySqlTypeDescriptor.INSTANCE, JsonNodeTypeDescriptor.INSTANCE);
+        super(
+            JsonBinarySqlTypeDescriptor.INSTANCE,
+            new JsonNodeTypeDescriptor(PropertyLoader.INSTANCE.getObjectMapperWrapper())
+        );
     }
 
     public String getName() {
         return "jsonb-node";
     }
+
 }
